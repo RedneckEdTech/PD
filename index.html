@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NODE 03: The Arcade Architect</title>
+    <style>
+        /* Hacker Terminal Aesthetic */
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        body { 
+            background-color: #050505; 
+            color: #00FF41; 
+            font-family: 'VT323', monospace; 
+            text-align: center; 
+            padding: 20px; 
+            font-size: 24px; 
+            line-height: 1.5;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* Full Page HTML5 Canvas Matrix Rain */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        h1, h2 { 
+            color: #00FF41; 
+            text-shadow: 0px 0px 8px rgba(0, 255, 65, 0.6); 
+            letter-spacing: 2px; 
+            text-transform: uppercase;
+        }
+        p { max-width: 800px; margin: 0 auto 20px auto; }
+        
+        /* Interactive Elements */
+        input[type="text"] { 
+            background: #111; 
+            border: 1px solid #00FF41; 
+            color: #00FF41; 
+            padding: 10px; 
+            font-family: 'VT323', monospace; 
+            font-size: 24px; 
+            text-align: center;
+            outline: none; 
+            text-transform: uppercase;
+            width: 300px;
+        }
+        input[type="text"]::placeholder {
+            color: rgba(0, 255, 65, 0.6);
+            opacity: 1;
+        }
+        input[type="text"]:focus {
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+        
+        button { 
+            background: transparent; 
+            border: 2px solid #00FF41; 
+            color: #00FF41; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            font-family: 'VT323', monospace; 
+            font-size: 24px; 
+            transition: 0.2s; 
+            margin: 10px; 
+            text-transform: uppercase;
+            text-shadow: 0px 0px 5px rgba(0, 255, 65, 0.4);
+            position: relative;
+            z-index: 10;
+        }
+        button:hover { 
+            background: #00FF41; 
+            color: #000; 
+            box-shadow: 0 0 15px #00FF41; 
+            text-shadow: none;
+        }
+        
+        /* Layout & Animation */
+        .hidden { display: none; }
+        .fade-in { animation: fadeIn 0.8s ease-in forwards; }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+        
+        .terminal-box { 
+            border: 1px solid #003b12; 
+            border-left: 4px solid #00FF41;
+            padding: 20px; 
+            margin: 30px auto; 
+            max-width: 800px; 
+            text-align: left; 
+            background: rgba(5, 5, 5, 0.95); 
+            box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.05), 0 0 15px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 5;
+            backdrop-filter: blur(2px);
+        }
+        .video-container { 
+            margin: 30px auto; 
+            max-width: 720px; 
+            aspect-ratio: 16/9; 
+            background: #0a0a0a; 
+            border: 1px dashed #00FF41; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: #00FF41; 
+            position: relative;
+            z-index: 5;
+        }
+        
+        /* Navigation Bar */
+        .nav-bar { display: flex; justify-content: center; align-items: center; margin-top: 20px; gap: 20px; flex-wrap: wrap; position: relative; z-index: 10; }
+        
+        .warning-text { color: #ff003c; text-shadow: 0 0 5px rgba(255, 0, 60, 0.5); }
+    </style>
+</head>
+<body>
+
+    <!-- Full Screen Canvas for Matrix Rain -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- STAGE 0: The Password Gate -->
+    <div id="stage-0" class="fade-in">
+        <h1>MAINFRAME ACTIVE</h1>
+        <p>Awaiting Final Node Decryption Key</p>
+        <input type="text" id="accessCode" placeholder="ENTER KEY" onkeydown="if(event.key === 'Enter') checkPassword()" autofocus>
+        <br>
+        <button onclick="checkPassword()">BYPASS</button>
+        <p id="errorMsg" class="warning-text" style="display: none; margin-top: 10px;">ACCESS DENIED. INVALID CIPHER.</p>
+    </div>
+
+    <!-- STAGE 1: Data Source Selection (Quest 7.1) -->
+    <div id="stage-1" class="hidden">
+        <h1>NODE 03: THE DUAL VECTOR EXPLOIT</h1>
+        <div class="terminal-box">
+            <p>> SECURE CONNECTION ESTABLISHED...</p>
+            <p>> DECRYPTING FINAL MISSION BRIEFING...</p>
+            <p><strong>Cipher:</strong> "This is it, Operative. The legacy networks monitor all digital traffic. To bypass their engagement filters and guarantee student access, we need a contingency plan. A payload that works even when they cut the hardlines."</p>
+            <p>"We are executing a Dual-Vector attack: an <strong>Analog Exploit</strong> (unplugged game) and its <strong>Digital Twin</strong> (plugged HTML equivalent)."</p>
+            <hr style="border-color: #003b12; margin: 20px 0;">
+            <p style="color: #00FF41;">> QUEST 7.1: INJECTION METHOD</p>
+            <p>How will you provide the curriculum data for this exploit?</p>
+        </div>
+        
+        <h2>SELECT INJECTION METHOD</h2>
+        <button onclick="setSource('reference')">ATTACH SECURED FILES</button>
+        <button onclick="setSource('paste')">INJECT RAW TEXT</button>
+        <button onclick="setSource('topic')">RUN HEURISTICS ON TOPIC</button>
+    </div>
+
+    <!-- STAGE 1B: Analog Vector Selection (Quest 7.2) -->
+    <div id="stage-1b" class="hidden">
+        <div class="terminal-box">
+            <p style="color: #00FF41;">> QUEST 7.2: THE ANALOG BLUEPRINT</p>
+            <p><strong>Cipher:</strong> "Data stream acquired and buffered. We cannot rely entirely on digital infrastructure—the system admins are actively monitoring the grid for our footprints. We need an analog contingency. Before we write a single line of code, you must engineer a physical, offline framework that can deploy instantly in any classroom environment, completely independent of the network."</p>
+            <p>"Choose your analog mechanism."</p>
+        </div>
+        
+        <h2>SELECT ANALOG VECTOR</h2>
+        <button onclick="setVector('card')">INDEX CARD INJECTION (CARD-BASED)</button>
+        <button onclick="setVector('dice')">PROBABILITY ENGINE (DICE-BASED)</button>
+        <button onclick="setVector('matching')">DATA CORRELATION PROTOCOL (MATCHING)</button>
+        
+        <div class="nav-bar">
+            <button onclick="goBack('stage-1b', 'stage-1')">< ABORT</button>
+        </div>
+    </div>
+
+    <!-- STAGE 2: Analog Script Generation (Quest 7 Result) -->
+    <div id="stage-2" class="hidden">
+        <h2 id="vectorTitle"></h2>
+        
+        <div class="video-container" id="analogVideoBox">
+            [EMBED ANALOG BLUEPRINT TUTORIAL VIDEO HERE]
+        </div>
+
+        <div class="terminal-box">
+            <p>> ANALOG SCRIPT GENERATED</p>
+            <p>Copy this sequence and execute it in the AI Terminal Agent of your choice to generate your physical game rules, description, and setup instructions.</p>
+            <blockquote id="promptText" style="color: #00FF41; background: #000; padding: 15px; border-left: 2px solid #00FF41; font-family: monospace; font-size: 18px; line-height: 1.4;"></blockquote>
+            <p style="font-size: 20px; font-weight: bold; margin-top: 15px;">Note: Keep this text window open. You will need these rules for the next stage.</p>
+        </div>
+        
+        <div class="nav-bar">
+            <button onclick="goBack('stage-2', 'stage-1b')">< ABORT</button>
+            <button onclick="unlockDigitalTwin()">RULES GENERATED</button>
+        </div>
+    </div>
+
+    <!-- STAGE 3: The Digital Twin (Quest 8) -->
+    <div id="stage-3" class="hidden">
+        <h2>THE DIGITAL TWIN</h2>
+        
+        <div class="video-container">
+            [EMBED DIGITAL TWIN HTML TUTORIAL VIDEO HERE]
+        </div>
+        
+        <div class="terminal-box">
+            <p style="color: #00FF41; border-bottom: 1px dashed #00FF41; padding-bottom: 10px;">> QUEST 8: DIGITAL MIRRORING</p>
+            <p><strong>Cipher:</strong> "The Analog Blueprint is locked. Now, we build its Digital Twin. A plugged HTML variant to ensure maximum saturation across all vectors."</p>
+            <hr style="border-color: #003b12; margin: 20px 0;">
+            <p><strong>EXECUTE MIRRORING PROTOCOL:</strong></p>
+            <p>In the *same chat window* where your AI generated the unplugged game, paste this exact follow-up command:</p>
+            <blockquote style="color: #00FF41; background: #000; padding: 15px; border-left: 2px solid #00FF41; font-family: monospace; font-size: 18px; line-height: 1.4;">
+                "Now, act as an expert educational web developer. Build a digital, single-file HTML version of the game we just designed. Output as a standalone HTML file with inline CSS/JS and no external assets (no CDNs). Ensure the mechanics match the offline version as closely as possible."
+            </blockquote>
+        </div>
+        
+        <div class="nav-bar">
+            <button onclick="goBack('stage-3', 'stage-2')">< ABORT</button>
+            <button onclick="unlockDeploymentPlatform()">HTML COMPILED</button>
+        </div>
+    </div>
+
+    <!-- STAGE 4: Platform Selection (Quest 9) -->
+    <div id="stage-4" class="hidden">
+        <h2>THE DUAL DEPLOYMENT</h2>
+        <div class="terminal-box">
+            <p style="color: #00FF41; border-bottom: 1px dashed #00FF41; padding-bottom: 10px;">> QUEST 9: NETWORK OVERRIDE</p>
+            <p><strong>Cipher:</strong> "Package the payload. We must bundle both the Analog and Digital vectors into a single, accessible directory on the grid. Select the external hosting array you compromised in Node 02."</p>
+        </div>
+        
+        <button onclick="setDeployPlatform('google')">THE GOOGLE ARRAY (GOOGLE SITES)</button>
+        <button onclick="setDeployPlatform('sharepoint')">THE MICROSOFT NODE (SHAREPOINT)</button>
+        <button onclick="setDeployPlatform('github')">OPEN SOURCE REPO (GITHUB PAGES)</button>
+        
+        <div class="nav-bar">
+            <button onclick="goBack('stage-4', 'stage-3')">< ABORT</button>
+        </div>
+    </div>
+
+    <!-- STAGE 4B: Deployment Instructions -->
+    <div id="stage-4b" class="hidden">
+        <h2 id="deployTitle"></h2>
+        
+        <div class="video-container" id="deployVideoBox">
+            [EMBED DUAL DEPLOYMENT TUTORIAL VIDEO HERE]
+        </div>
+        
+        <div class="terminal-box" id="deployInstructions">
+            <!-- Dynamically injected based on platform selection -->
+        </div>
+        
+        <div class="nav-bar">
+            <button onclick="goBack('stage-4b', 'stage-4')">< ABORT</button>
+            <button onclick="unlockProxyServer()">DIRECTORY SECURED</button>
+        </div>
+    </div>
+
+    <!-- STAGE 5: The Final Terminal Upload -->
+    <div id="stage-5" class="hidden">
+        <h2>UPLINK TO COMMAND PROXY</h2>
+        <div class="terminal-box">
+            <p><strong>Cipher:</strong> "Mission accomplished, Operative. You have successfully established a dual-vector infiltration."</p>
+            <p>Copy the shared URL to your new deployment (containing both the analog rules and the digital HTML file) and transmit it to the Command Proxy for final verification.</p>
+        </div>
+        
+        <div class="nav-bar">
+            <button onclick="goBack('stage-5', 'stage-4b')">< ABORT</button>
+            <!-- Replace the '#' with your actual Google Form Link -->
+            <button onclick="window.open('#', '_blank')">ACCESS COMMAND PROXY</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Full Screen Matrix Rain Effect ---
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%""\'#&_(),.;:?!\\|{{}}<>[]^~'.split('');
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0'; 
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 35);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        window.onload = function() {
+            const input = document.getElementById('accessCode');
+            if (input) input.focus();
+        };
+
+        // --- Game Logic & Passwords ---
+        const CURRENT_PASSWORD = "ARCHITECT-03"; 
+        
+        let selectedSource = "";
+
+        function checkPassword() {
+            const input = document.getElementById('accessCode').value.trim().toUpperCase();
+            if (input === CURRENT_PASSWORD) {
+                document.getElementById('stage-0').classList.add('hidden');
+                const stage1 = document.getElementById('stage-1');
+                stage1.classList.remove('hidden');
+                stage1.classList.add('fade-in');
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        }
+
+        // Global Back Function
+        function goBack(currentStageId, previousStageId) {
+            const currentStage = document.getElementById(currentStageId);
+            const previousStage = document.getElementById(previousStageId);
+            
+            currentStage.classList.add('hidden');
+            currentStage.classList.remove('fade-in');
+            
+            previousStage.classList.remove('hidden');
+            previousStage.classList.add('fade-in');
+        }
+
+        function setSource(source) {
+            selectedSource = source;
+            document.getElementById('stage-1').classList.add('hidden');
+            const stage1b = document.getElementById('stage-1b');
+            stage1b.classList.remove('hidden');
+            stage1b.classList.add('fade-in');
+        }
+
+        function setVector(vectorType) {
+            document.getElementById('stage-1b').classList.add('hidden');
+            const stage2 = document.getElementById('stage-2');
+            const title = document.getElementById('vectorTitle');
+            const promptText = document.getElementById('promptText');
+            const analogVideoBox = document.getElementById('analogVideoBox');
+
+            let sourceText = "";
+            if (selectedSource === 'reference') {
+                sourceText = "Parse the attached reference materials as the source data.";
+            } else if (selectedSource === 'paste') {
+                sourceText = "Parse the following raw text as the source data: [PASTE YOUR CURRICULUM TEXT HERE].";
+            } else if (selectedSource === 'topic') {
+                sourceText = "Generate high school-level parameters based on this topic: [ENTER YOUR SPECIFIC TOPIC HERE].";
+            }
+
+            if (vectorType === 'card') {
+                title.innerText = "VECTOR: INDEX CARD INJECTION";
+                analogVideoBox.innerHTML = "[EMBED CARD GAME PROMPTING TUTORIAL HERE]";
+                promptText.innerText = `Act as an expert instructional game designer. Create a highly engaging, unplugged (offline/physical) card-style review game for my students.\n\n${sourceText}\n\nProvide a catchy Title, a brief Description, a list of required Setup materials (e.g., index cards), and clear step-by-step Rules for play.`;
+            } else if (vectorType === 'dice') {
+                title.innerText = "VECTOR: PROBABILITY ENGINE";
+                analogVideoBox.innerHTML = "[EMBED DICE GAME PROMPTING TUTORIAL HERE]";
+                promptText.innerText = `Act as an expert instructional game designer. Create a highly engaging, unplugged (offline/physical) dice-style review game for my students.\n\n${sourceText}\n\nProvide a catchy Title, a brief Description, a list of required Setup materials (e.g., dice, printed paper), and clear step-by-step Rules for play.`;
+            } else if (vectorType === 'matching') {
+                title.innerText = "VECTOR: DATA CORRELATION";
+                analogVideoBox.innerHTML = "[EMBED MATCHING GAME PROMPTING TUTORIAL HERE]";
+                promptText.innerText = `Act as an expert instructional game designer. Create a highly engaging, unplugged (offline/physical) matching-style review game for my students.\n\n${sourceText}\n\nProvide a catchy Title, a brief Description, a list of required Setup materials, and clear step-by-step Rules for physical play.`;
+            }
+
+            stage2.classList.remove('hidden');
+            stage2.classList.add('fade-in');
+        }
+
+        function unlockDigitalTwin() {
+            document.getElementById('stage-2').classList.add('hidden');
+            const stage3 = document.getElementById('stage-3');
+            stage3.classList.remove('hidden');
+            stage3.classList.add('fade-in');
+        }
+
+        function unlockDeploymentPlatform() {
+            document.getElementById('stage-3').classList.add('hidden');
+            const stage4 = document.getElementById('stage-4');
+            stage4.classList.remove('hidden');
+            stage4.classList.add('fade-in');
+        }
+
+        function setDeployPlatform(platform) {
+            document.getElementById('stage-4').classList.add('hidden');
+            const stage4b = document.getElementById('stage-4b');
+            const title = document.getElementById('deployTitle');
+            const instructions = document.getElementById('deployInstructions');
+            const deployVideoBox = document.getElementById('deployVideoBox');
+
+            if (platform === 'google') {
+                title.innerText = "DEPLOYMENT: THE GOOGLE ARRAY";
+                deployVideoBox.innerHTML = "[EMBED GOOGLE SITES DUAL-DEPLOYMENT TUTORIAL HERE]";
+                instructions.innerHTML = "<p>1. Access <code>sites.google.com</code> and navigate to your active site.</p><p>2. Generate a new sub-page for this Dual-Vector payload.</p><p>3. Insert a <strong>Text</strong> module and paste your Analog rules (from Quest 7) as documentation.</p><p>4. Insert an <strong>Embed</strong> module and inject your Digital HTML code (from Quest 8).</p><p>5. Execute the <strong>Publish</strong> command and copy your live URL.</p>";
+            } else if (platform === 'sharepoint') {
+                title.innerText = "DEPLOYMENT: THE MICROSOFT NODE";
+                deployVideoBox.innerHTML = "[EMBED SHAREPOINT DUAL-DEPLOYMENT TUTORIAL HERE]";
+                instructions.innerHTML = "<p>1. Access your Microsoft 365 dashboard and navigate to your SharePoint site.</p><p>2. Initialize a new <strong>Page</strong> for this Dual-Vector payload.</p><p>3. Deploy a <strong>Text</strong> web part and paste your Analog rules (from Quest 7).</p><p>4. Deploy an <strong>Embed</strong> web part and inject your Digital HTML code (from Quest 8).</p><p>5. Publish the page and extract the live URL.</p>";
+            } else if (platform === 'github') {
+                title.innerText = "DEPLOYMENT: OPEN SOURCE REPO";
+                deployVideoBox.innerHTML = "[EMBED GITHUB PAGES DUAL-DEPLOYMENT TUTORIAL HERE]";
+                instructions.innerHTML = "<p>1. Access your GitHub repository via <code>github.com</code>.</p><p>2. Create a new directory (folder) by typing <code>/new-folder-name/</code> in the 'Add file' > 'Create new file' path.</p><p>3. Name the first file <code>readme.md</code> and paste your Analog rules (from Quest 7), then commit.</p><p>4. Add another file to that same folder named <code>index.html</code> and paste your Digital HTML code (from Quest 8), then commit.</p><p>5. Your live URL will route to this specific folder path.</p>";
+            }
+
+            stage4b.classList.remove('hidden');
+            stage4b.classList.add('fade-in');
+        }
+
+        function unlockProxyServer() {
+            document.getElementById('stage-4b').classList.add('hidden');
+            const stage5 = document.getElementById('stage-5');
+            stage5.classList.remove('hidden');
+            stage5.classList.add('fade-in');
+        }
+    </script>
+</body>
+</html>
