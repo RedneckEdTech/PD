@@ -172,7 +172,7 @@
         <h2 id="platformTitle"></h2>
         
         <div class="video-container" id="videoBox">
-            [ENCRYPTED VIDEO TUTORIAL STREAM]
+            <!-- Video gets embedded here dynamically -->
         </div>
         
         <div class="terminal-box">
@@ -322,15 +322,15 @@
 
             if (platform === 'google') {
                 title.innerText = "TARGET: THE GOOGLE ARRAY";
-                videoBox.innerHTML = "[EMBED GOOGLE ARRAY TUTORIAL VIDEO HERE]";
+                videoBox.innerHTML = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/JZQxl0oBU8s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
                 instructions.innerHTML = "<p>1. Access <code>sites.google.com</code> and initialize a blank site.</p><p>2. Double-click the empty grid and select the yellow <strong>&lt; &gt; Embed</strong> module.</p><p>3. Switch to the <strong>Embed code</strong> tab.</p><p>4. Inject your complete raw HTML payload and execute (Insert).</p><p>5. Resize the module boundaries to ensure full visibility.</p>";
             } else if (platform === 'sharepoint') {
                 title.innerText = "TARGET: THE MICROSOFT NODE";
-                videoBox.innerHTML = "[EMBED SHAREPOINT TUTORIAL VIDEO HERE]";
+                videoBox.innerHTML = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/utdkMNiA1fI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
                 instructions.innerHTML = "<p>1. Access your Microsoft 365 dashboard and initialize a blank SharePoint Page.</p><p>2. Click the <strong>+</strong> icon to deploy a new web part.</p><p>3. Search for and select the <strong>Embed</strong> module.</p><p>4. Inject your raw HTML code directly into the terminal field.</p><p class='warning-text'><em>*Note: If the sysadmins have blocked raw embeds on your node, upload your .html file to the Document Library, copy its sharing link, and use the 'File Viewer' web part instead.</em></p>";
             } else if (platform === 'github') {
                 title.innerText = "TARGET: OPEN SOURCE REPO";
-                videoBox.innerHTML = "[EMBED GITHUB PAGES TUTORIAL VIDEO HERE]";
+                videoBox.innerHTML = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/vbeb1vS60WA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
                 instructions.innerHTML = "<p>1. Access <code>github.com</code> and initialize a New Repository (Public).</p><p>2. Click <strong>Add file > Upload files</strong> to upload your <code>payload.html</code> file to the root directory.</p><p>3. Navigate to repository <strong>Settings</strong> > <strong>Pages</strong>.</p><p>4. Under Build and deployment, change the source branch to <strong>main</strong> and Save.</p><p>5. Await network propagation (1-2 minutes) for your live URL.</p>";
             }
 
