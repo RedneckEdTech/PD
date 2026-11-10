@@ -371,15 +371,15 @@
 
             if (vectorType === 'card') {
                 title.innerText = "VECTOR: INDEX CARD INJECTION";
-                analogVideoBox.innerHTML = "[EMBED CARD GAME PROMPTING TUTORIAL HERE]";
+                analogVideoBox.innerHTML = '<video style="width: 100%; height: 100%; object-fit: cover;" controls><source src="index_card_injection.mp4" type="video/mp4">Your browser does not support the video tag.</video>';
                 promptText.innerText = `Act as an expert instructional game designer. Create a highly engaging, unplugged (offline/physical) card-style review game for my students.\n\n${sourceText}\n\nProvide a catchy Title, a brief Description, a list of required Setup materials (e.g., index cards), and clear step-by-step Rules for play.`;
             } else if (vectorType === 'dice') {
                 title.innerText = "VECTOR: PROBABILITY ENGINE";
-                analogVideoBox.innerHTML = "[EMBED DICE GAME PROMPTING TUTORIAL HERE]";
+                analogVideoBox.innerHTML = '<video style="width: 100%; height: 100%; object-fit: cover;" controls><source src="probability_engine.mp4" type="video/mp4">Your browser does not support the video tag.</video>';
                 promptText.innerText = `Act as an expert instructional game designer. Create a highly engaging, unplugged (offline/physical) dice-style review game for my students.\n\n${sourceText}\n\nProvide a catchy Title, a brief Description, a list of required Setup materials (e.g., dice, printed paper), and clear step-by-step Rules for play.`;
             } else if (vectorType === 'matching') {
                 title.innerText = "VECTOR: DATA CORRELATION";
-                analogVideoBox.innerHTML = "[EMBED MATCHING GAME PROMPTING TUTORIAL HERE]";
+                analogVideoBox.innerHTML = '<video style="width: 100%; height: 100%; object-fit: cover;" controls><source src="data_correlation.mp4" type="video/mp4">Your browser does not support the video tag.</video>';
                 promptText.innerText = `Act as an expert instructional game designer. Create a highly engaging, unplugged (offline/physical) matching-style review game for my students.\n\n${sourceText}\n\nProvide a catchy Title, a brief Description, a list of required Setup materials, and clear step-by-step Rules for physical play.`;
             }
 
